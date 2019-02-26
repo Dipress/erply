@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=articles
+      - POSTGRES_USER=articles
+      - POSTGRES_PASSWORD=123456
