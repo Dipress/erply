@@ -38,22 +38,16 @@ type CreateHandler struct {
 func (h *CreateHandler) Handle(w http.ResponseWriter, r *http.Request) error {
 	var f create.Form
 	if err := json.NewDecoder(r.Body).Decode(&f); err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return errors.Wrap(err, "decoder decode")
+		return errors.Wrap(badRequestResponse(w), "decoder decode body")
 	}
 
 	u, err := h.Create(r.Context(), &f)
 	if err != nil {
 		switch v := errors.Cause(err).(type) {
 		case validation.Errors:
-			w.WriteHeader(http.StatusUnprocessableEntity)
-			if err := json.NewEncoder(w).Encode(v); err != nil {
-				return errors.Wrap(err, "validation encoder encode")
-			}
-			return nil
+			return errors.Wrap(unprocessabeEntityResponse(w, v), "validation response")
 		default:
-			w.WriteHeader(http.StatusInternalServerError)
-			return errors.Wrap(err, "registrater registrate")
+			return errors.Wrap(internalServerErrorResponse(w), "create")
 		}
 	}
 
@@ -74,19 +68,16 @@ func (h *FindHandler) Handle(w http.ResponseWriter, r *http.Request) error {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return errors.Wrapf(err, "convert id query param to int: %v", err)
+		return errors.Wrapf(badRequestResponse(w), "convert id query param to int: %v", err)
 	}
 
 	u, err := h.Find(r.Context(), id)
 	if err != nil {
 		switch errors.Cause(err) {
 		case article.ErrNotFound:
-			w.WriteHeader(http.StatusNotFound)
-			return nil
+			return errors.Wrap(notFoundResponse(w), "find")
 		default:
-			w.WriteHeader(http.StatusInternalServerError)
-			return errors.Wrap(err, "finder find")
+			return errors.Wrap(internalServerErrorResponse(w), "find")
 		}
 	}
 
@@ -105,6 +96,6 @@ type httpHandler struct {
 // ServeHTTP implements http.Handler.
 func (h httpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if err := h.Handle(w, r); err != nil {
-		log.Printf("serve http: %v\n", err)
+		log.Printf("serve http: %+v\n", err)
 	}
 }

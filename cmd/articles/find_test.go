@@ -34,7 +34,7 @@ func TestFind(t *testing.T) {
 
 		t.Log("\ttest:0\tshould find article.")
 		{
-			req, err := http.NewRequest("GET", fmt.Sprintf("http://%s/users/1", s.Addr), nil)
+			req, err := http.NewRequest("GET", fmt.Sprintf("http://%s/articles/1", s.Addr), nil)
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}

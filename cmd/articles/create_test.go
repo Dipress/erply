@@ -18,7 +18,7 @@ func TestCreate(t *testing.T) {
 
 		t.Log("\ttest:0\tshould create user.")
 		{
-			req, err := http.NewRequest("POST", fmt.Sprintf("http://%s/users", s.Addr), strings.NewReader(`{"title": "Title", "body": "Body"}`))
+			req, err := http.NewRequest("POST", fmt.Sprintf("http://%s/articles", s.Addr), strings.NewReader(`{"title": "Title", "body": "Body"}`))
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
