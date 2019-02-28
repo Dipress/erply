@@ -1,7 +1,6 @@
 package http
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"github.com/pkg/errors"
@@ -28,8 +27,13 @@ type messageResponse struct {
 
 func badRequestResponse(w http.ResponseWriter) error {
 	w.WriteHeader(http.StatusBadRequest)
-	if err := json.NewEncoder(w).Encode(&badRequestBody); err != nil {
-		return errors.Wrap(err, "encoder encode")
+
+	data, err := badRequestBody.MarshalJSON()
+	if err != nil {
+		return errors.Wrap(err, "marshal json")
+	}
+	if _, err := w.Write(data); err != nil {
+		return errors.Wrap(err, "write response")
 	}
 
 	return nil
@@ -48,8 +52,12 @@ func unprocessabeEntityResponse(w http.ResponseWriter, ers validation.Errors) er
 		Errors:  ers,
 	}
 
-	if err := json.NewEncoder(w).Encode(&ver); err != nil {
-		return errors.Wrap(err, "encoder encode")
+	data, err := ver.MarshalJSON()
+	if err != nil {
+		return errors.Wrap(err, "marshal json")
+	}
+	if _, err := w.Write(data); err != nil {
+		return errors.Wrap(err, "write response")
 	}
 
 	return nil
@@ -57,8 +65,12 @@ func unprocessabeEntityResponse(w http.ResponseWriter, ers validation.Errors) er
 
 func internalServerErrorResponse(w http.ResponseWriter) error {
 	w.WriteHeader(http.StatusInternalServerError)
-	if err := json.NewEncoder(w).Encode(&internalServerErrorBody); err != nil {
-		return errors.Wrap(err, "encoder encode")
+	data, err := internalServerErrorBody.MarshalJSON()
+	if err != nil {
+		return errors.Wrap(err, "marshal json")
+	}
+	if _, err := w.Write(data); err != nil {
+		return errors.Wrap(err, "write response")
 	}
 
 	return nil
@@ -66,8 +78,13 @@ func internalServerErrorResponse(w http.ResponseWriter) error {
 
 func notFoundResponse(w http.ResponseWriter) error {
 	w.WriteHeader(http.StatusNotFound)
-	if err := json.NewEncoder(w).Encode(&notFoundBody); err != nil {
-		return errors.Wrap(err, "encoder encode")
+
+	data, err := notFoundBody.MarshalJSON()
+	if err != nil {
+		return errors.Wrap(err, "marshal json")
+	}
+	if _, err := w.Write(data); err != nil {
+		return errors.Wrap(err, "write response")
 	}
 
 	return nil

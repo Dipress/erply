@@ -34,6 +34,7 @@ type Service struct {
 }
 
 // Form is a create request.
+//easyjson:json
 type Form struct {
 	Title string `json:"title"`
 	Body  string `json:"body"`

@@ -11,6 +11,7 @@ var (
 )
 
 // Model is a article representation.
+//easyjson:json
 type Model struct {
 	ID        int       `json:"id"`
 	Title     string    `json:"title"`

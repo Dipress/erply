@@ -2,7 +2,7 @@ package http
 
 import (
 	"context"
-	"encoding/json"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
@@ -37,8 +37,14 @@ type CreateHandler struct {
 // Handle handles registration requests and return error.
 func (h *CreateHandler) Handle(w http.ResponseWriter, r *http.Request) error {
 	var f create.Form
-	if err := json.NewDecoder(r.Body).Decode(&f); err != nil {
-		return errors.Wrap(badRequestResponse(w), "decoder decode body")
+
+	data, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		return errors.Wrap(badRequestResponse(w), "read body")
+	}
+
+	if err := f.UnmarshalJSON(data); err != nil {
+		return errors.Wrap(badRequestResponse(w), "unmarshal json")
 	}
 
 	u, err := h.Create(r.Context(), &f)
@@ -51,8 +57,12 @@ func (h *CreateHandler) Handle(w http.ResponseWriter, r *http.Request) error {
 		}
 	}
 
-	if err := json.NewEncoder(w).Encode(&u); err != nil {
-		return errors.Wrap(err, "encoder encode")
+	data, err = u.MarshalJSON()
+	if err != nil {
+		return errors.Wrap(err, "marshal json")
+	}
+	if _, err := w.Write(data); err != nil {
+		return errors.Wrap(err, "write response")
 	}
 
 	return nil
@@ -81,8 +91,12 @@ func (h *FindHandler) Handle(w http.ResponseWriter, r *http.Request) error {
 		}
 	}
 
-	if err := json.NewEncoder(w).Encode(&u); err != nil {
-		return errors.Wrap(err, "encoder encode")
+	data, err := u.MarshalJSON()
+	if err != nil {
+		return errors.Wrap(err, "marshal json")
+	}
+	if _, err := w.Write(data); err != nil {
+		return errors.Wrap(err, "write response")
 	}
 
 	return nil
