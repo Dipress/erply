@@ -15,11 +15,22 @@ go run cmd/articles/main.go -db_url="postgres://articles:123456@localhost:5432/a
 
 **Auth required** : YES
 
-## Success Response
+**Example**:
+
+``` curl
+curl -i -X POST http://localhost:8080/articles -H "Authorization: Bearer verysecrettoken" -d '{"title": "Title", "body": "Body"}'
+```
+
+## Body
+
+  * **title** - required, length from 1 to 50
+  * **body** - required
+
+## Responses
 
 **Code** : `200 OK`
 
-**Content examples**
+**Content example**
 
 ```json
 {
@@ -31,8 +42,38 @@ go run cmd/articles/main.go -db_url="postgres://articles:123456@localhost:5432/a
 }
 ```
 
-``` curl
-curl -i -X POST http://localhost:8080/articles -H "Authorization: Bearer verysecrettoken" -d '{"title": "Title", "body": "Body"}'
+**Code** : `422 Unprocessable Entit`
+
+**Content example**
+
+```json
+{
+    "message": "you have validation errors",
+    "errors": {
+        "title": "cannot be blank",
+        "body": "cannot be blank"
+    }
+}
+```
+
+**Code** : `400 Bad Request`
+
+**Content example**
+
+```json
+{
+    "message": "bad request"
+}
+```
+
+**Code** : `501 Internal Server Error`
+
+**Content example**
+
+```json
+{
+    "message": "intenrnal server error",
+}
 ```
 
 # Find Article
@@ -43,11 +84,17 @@ curl -i -X POST http://localhost:8080/articles -H "Authorization: Bearer verysec
 
 **Auth required** : YES
 
-## Success Response
+**Example**:
+
+``` curl
+curl -i -X GET http://localhost:8080/articles/1 -H "Authorization: Bearer verysecrettoken"
+```
+
+## Responses
 
 **Code** : `200 OK`
 
-**Content examples**
+**Content example**
 
 ```json
 {
@@ -59,6 +106,22 @@ curl -i -X POST http://localhost:8080/articles -H "Authorization: Bearer verysec
 }
 ```
 
-``` curl
-curl -i -X GET http://localhost:8080/articles/1 -H "Authorization: Bearer verysecrettoken"
+**Code** : `404 Not Found`
+
+**Content example**
+
+```json
+{
+    "message": "not found",
+}
+```
+
+**Code** : `501 Internal Server Error`
+
+**Content example**
+
+```json
+{
+    "message": "intenrnal server error",
+}
 ```
