@@ -69,7 +69,7 @@ func (fi bindataFileInfo) Sys() interface{} {
 	return nil
 }
 
-var __1551106041_initDownSql = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\x72\x09\xf2\x0f\x50\x08\x71\x74\xf2\x71\x55\xf0\x74\x53\x70\x8d\xf0\x0c\x0e\x09\x56\x28\x2d\x4e\x2d\x2a\xb6\xe6\x02\x04\x00\x00\xff\xff\x2c\x02\x3d\xa7\x1c\x00\x00\x00")
+var __1551106041_initDownSql = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\x72\x09\xf2\x0f\x50\x08\x71\x74\xf2\x71\x55\xf0\x74\x53\x70\x8d\xf0\x0c\x0e\x09\x56\x48\x2c\x2a\xc9\x4c\xce\x49\x2d\xb6\xe6\x02\x04\x00\x00\xff\xff\xc8\xa2\xce\x28\x1f\x00\x00\x00")
 
 func _1551106041_initDownSqlBytes() ([]byte, error) {
 	return bindataRead(
@@ -84,7 +84,7 @@ func _1551106041_initDownSql() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "1551106041_init.down.sql", size: 28, mode: os.FileMode(420), modTime: time.Unix(1551106101, 0)}
+	info := bindataFileInfo{name: "1551106041_init.down.sql", size: 31, mode: os.FileMode(420), modTime: time.Unix(1551381926, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
